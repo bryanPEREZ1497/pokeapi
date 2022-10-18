@@ -1,44 +1,50 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { Searchbar } from 'react-native-paper';
+import { ScrollView } from 'react-native-gesture-handler';
+import PokemonDetailComponent from '../components/PokemonDetailComponent';
 
 export default function SearchScreen() {
     const [searchQuery, setSearchQuery] = useState('');
-    const [pokemon, setPokemon] = useState({});
+    const [pokemon, setPokemon] = useState(null);
 
     useEffect(() => {
-        let apiUrl = `https://pokeapi.co/api/v2/pokemon/${searchQuery}`;
-
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(JsonResponse => {
-                setPokemon(JsonResponse);
-            })
-            .catch(error => console.log(error));
-
+        const debounce = setTimeout(() => {
+            if (searchQuery) {
+                fetch(`https://pokeapi.co/api/v2/pokemon/${searchQuery}`)
+                    .then(response => response.json())
+                    .then(JsonResponse => {
+                        setPokemon(JsonResponse);
+                    })
+                    .catch(error => console.log(error));
+            }
+        }, 1000);
+        return () => clearTimeout(debounce);
     }, [searchQuery])
 
-
-    const onChangeSearch = query => setSearchQuery(query);
+    const onChangeSearch = query => {
+        setSearchQuery(query);
+    };
 
     return (
-        <>
+        <ScrollView>
             <Searchbar
                 placeholder="Search"
                 onChangeText={onChangeSearch}
                 value={searchQuery}
             />
-            <Image
-                style={{
-                    width: 400,
-                    height: 200,
-                }}
-                source={{ uri: pokemon.sprites?.other.dream_world.front_default }} />
-
-            <Text>
-                {pokemon.name}
-            </Text>
-        </>
+            {
+                pokemon
+                    ? <PokemonDetailComponent pokemon={pokemon} />
+                    : <View style={styles.container}>
+                        <Image
+                            style={styles.images}
+                            source={require('../assets/pokeball.png')}
+                        />
+                        <Text style={styles.texto}>Search for a Pokemon</Text>
+                    </View>
+            }
+        </ScrollView>
     );
 }
 const styles = StyleSheet.create({
@@ -49,14 +55,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     images: {
-        width: 125,
-        height: 250,
-        margin: 5,
-        alignSelf: 'center',
-        borderRadius: 3
+        width: 300,
+        height: 300,
+        // margin: 5,
+        // alignSelf: 'center',
+        // borderRadius: 3
     },
     texto: {
-        paddingTop: 30,
-        margin: 5
+        // paddingTop: 30,
+        // margin: 5
     },
 });

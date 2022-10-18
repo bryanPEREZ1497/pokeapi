@@ -5,17 +5,22 @@ import {
   View,
   FlatList,
   TouchableOpacity,
-  Image
+  Image,
+  Pressable
 } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import { useNavigation } from '@react-navigation/native';
+import { IconButton, MD3Colors } from 'react-native-paper';
+// import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function HomeScreen() {
   const [pokemons, setPokemons] = useState([]);
   const [pokemon, setPokemon] = useState(null);
   const [offset, setOffset] = useState(12);
   const modalizeRef = useRef(null);
+  const navigation = useNavigation();
 
   const onOpen = () => {
     modalizeRef.current?.open();
@@ -30,7 +35,9 @@ export default function HomeScreen() {
         style={{
           width: 300,
           height: 300,
-        }} source={{ uri: item.sprites?.other.dream_world.front_default }} />
+        }}
+        source={{ uri: item.sprites?.other.dream_world.front_default }}
+      />
 
       <Text>
         {item.name}
@@ -39,7 +46,7 @@ export default function HomeScreen() {
   );
 
   useEffect(() => {
-    let url = `https://pokeapi.co/api/v2/pokemon?limit=12&offset=${offset}`;
+    let url = `https://pokeapi.co/api/v2/pokemon?limit=4&offset=${offset}`;
     fetch(url)
       .then(response => response.json())
       .then(JsonResponse => {
@@ -48,8 +55,9 @@ export default function HomeScreen() {
             .then(response => response.json())
             .then(JsonResponse => {
               setPokemons([...pokemons, JsonResponse]);
-              console.log('1res', pokemons);
-            });
+              console.log('res', pokemons);
+            })
+            .catch(error => console.log(error));
         });
         setPokemons([...pokemons, ...JsonResponse.results]);
       })
@@ -63,6 +71,10 @@ export default function HomeScreen() {
         ref={modalizeRef}
         snapPoint={400}
         modalHeight={700}
+        onRefresh={() => {
+          setOffset(offset + 12);
+        }}
+        refreshing = {true}
         HeaderComponent={
           <View style={{
             width: '100%',
@@ -71,35 +83,30 @@ export default function HomeScreen() {
             borderBottomWidth: 2, borderStyle: 'solid', borderBottomColor: 'lightgray',
           }}>
             <Text style={{ textAlign: 'center', fontSize: 25, marginTop: 15 }}>
-              {pokemon?.name}
+              {String(pokemon?.name).toUpperCase()}
             </Text>
           </View>
         }>
-        <Text>Modal Content</Text>
-        
-        <Image
+
+        <View
           style={{
-            width: 100,
-            height: 100,
-          }} source={{ uri: pokemon?.sprites.back_default }} />
-        
-        <Image
-          style={{
-            width: 100,
-            height: 100,
-          }} source={{ uri: pokemon?.sprites.front_default }} />
-        
-        <Image
-          style={{
-            width: 100,
-            height: 100,
-          }} source={{ uri: pokemon?.sprites.other.home.front_default }} />
-        
-        <Image
-          style={{
-            width: 100,
-            height: 100,
-          }} source={{ uri: pokemon?.sprites.other.home["official - artwork"] }} />
+            display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'
+          }}>
+
+          <Pressable onPress={() => {
+            modalizeRef.current?.close();
+            navigation.navigate('DetailsScreen', { ...pokemon })
+          }}>
+
+            <Icon name="details" size={26} />
+
+          </Pressable>
+          <TouchableOpacity>
+            <Image
+              style={styles.images}
+              source={{ uri: pokemon?.sprites.other.home.front_default }} />
+          </TouchableOpacity>
+        </View>
 
       </Modalize>
       <FlatList
@@ -126,10 +133,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   images: {
-    width: 125,
-    height: 250,
-    margin: 5,
-    borderRadius: 3,
+    width: 500,
+    height: 500,
+    // margin: 5,
+    // borderRadius: 3,
   },
   txt: {
     color: 'black',
