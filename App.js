@@ -69,17 +69,36 @@ function MyTabs() {
 
 import { createStackNavigator } from "@react-navigation/stack";
 import DetailsScreen from './screens/DetailsScreen';
+// import { FavoritesProvider } from './context/FavoritesContext.js';
+import FavoritesProvider from './context/FavoritesContext.js';
 
 const Stack = createStackNavigator();
 
+function FavoritesState({ children }) {
+  return (
+    <>
+      <FavoritesProvider>
+        {children}
+      </FavoritesProvider>
+    </>
+  );
+}
+
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
+
 function MyStack() {
   return (
+    // <SafeAreaProvider>
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Pokemons" component={MyTabs} />
-        <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
-      </Stack.Navigator>
+      <FavoritesState>
+        <Stack.Navigator>
+          <Stack.Screen name="Pokemons" component={MyTabs} />
+          <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
+        </Stack.Navigator>
+      </FavoritesState>
     </NavigationContainer>
+    // </SafeAreaProvider>
   );
 }
 

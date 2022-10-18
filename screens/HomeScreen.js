@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,9 +11,12 @@ import {
 import { Modalize } from 'react-native-modalize';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
-import { IconButton, MD3Colors } from 'react-native-paper';
 // import Icon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Card } from 'react-native-paper';
+
+import FavoriteButton from '../components/FavoriteButton';
+
 
 export default function HomeScreen() {
   const [pokemons, setPokemons] = useState([]);
@@ -31,17 +34,20 @@ export default function HomeScreen() {
       style={styles.item}
       onPress={() => { setPokemon(item); onOpen(); }}
     >
-      <Image
-        style={{
-          width: 300,
-          height: 300,
-        }}
-        source={{ uri: item.sprites?.other.dream_world.front_default }}
-      />
+      <Card
+        elevation={2}
+      >
+        <Card.Title title={item.name} left={()=><FavoriteButton favorite={item}/>} />
 
-      <Text>
-        {item.name}
-      </Text>
+        <Card.Cover
+          source={{ uri: item.sprites?.other.dream_world.front_default }}
+          style={{
+            width: 340,
+            height: 340,
+          }}
+        />
+
+      </Card>
     </TouchableOpacity>
   );
 
@@ -55,7 +61,6 @@ export default function HomeScreen() {
             .then(response => response.json())
             .then(JsonResponse => {
               setPokemons([...pokemons, JsonResponse]);
-              console.log('res', pokemons);
             })
             .catch(error => console.log(error));
         });
@@ -74,7 +79,7 @@ export default function HomeScreen() {
         onRefresh={() => {
           setOffset(offset + 12);
         }}
-        refreshing = {true}
+        refreshing={true}
         HeaderComponent={
           <View style={{
             width: '100%',
@@ -145,8 +150,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
+    // backgroundColor: '#f9c2ff',
+    // padding: 20,
     marginVertical: 8,
     // marginHorizontal: 16,
     // width: 100,

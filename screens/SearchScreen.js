@@ -47,6 +47,7 @@ export default function SearchScreen() {
         </ScrollView>
     );
 }
+
 const styles = StyleSheet.create({
     container: {
         display: 'flex',

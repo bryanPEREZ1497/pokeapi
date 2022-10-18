@@ -1,17 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { List } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import FavoriteButton from './FavoriteButton';
+
 
 export default function PokemonDetailComponent({ pokemon }) {
     return (
         <List.Section>
+            <List.Item
+                title='Add'
+                right={() => <FavoriteButton favorite={pokemon} />}
+            />
+
             <List.Subheader>Sprites</List.Subheader>
             <View
-                style={{
-                    // display: 'grid', gridTemplateColumns: '1fr 1fr',
-                    // gap: 1, padding: 0,
-                }}>
+            >
                 <TouchableOpacity>
                     <Image
                         style={styles.images}
