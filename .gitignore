@@ -56,3 +56,6 @@ dist/
 
 #VSCode
 .vscode/
+
+.env
+environment.js

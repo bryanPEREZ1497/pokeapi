@@ -65,5 +65,6 @@ const styles = StyleSheet.create({
     texto: {
         // paddingTop: 30,
         // margin: 5
+        fontSize: 20
     },
 });

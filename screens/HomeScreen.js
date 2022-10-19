@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,9 +9,7 @@ import {
   Pressable
 } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
-// import Icon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Card } from 'react-native-paper';
 
@@ -37,7 +35,7 @@ export default function HomeScreen() {
       <Card
         elevation={2}
       >
-        <Card.Title title={item.name} left={()=><FavoriteButton favorite={item}/>} />
+        <Card.Title title={item.name} left={() => <FavoriteButton favorite={item} />} />
 
         <Card.Cover
           source={{ uri: item.sprites?.other.dream_world.front_default }}
@@ -52,6 +50,7 @@ export default function HomeScreen() {
   );
 
   useEffect(() => {
+    
     let url = `https://pokeapi.co/api/v2/pokemon?limit=4&offset=${offset}`;
     fetch(url)
       .then(response => response.json())

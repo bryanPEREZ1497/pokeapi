@@ -3,15 +3,17 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { List } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { FavoritesContext } from '../context/FavoritesContext';
 
 import FavoriteButton from './FavoriteButton';
 
 
 export default function PokemonDetailComponent({ pokemon }) {
+    const { isFavorite } = useContext(FavoritesContext)
     return (
         <List.Section>
             <List.Item
-                title='Add'
+                title={isFavorite(pokemon.id) ? 'Remove' : 'Add'}
                 right={() => <FavoriteButton favorite={pokemon} />}
             />
 

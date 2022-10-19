@@ -19,12 +19,18 @@ export default function FavoritesProvider({ children }) {
         dispatch({ type: actionTypes.REMOVE_FAVORITE, payload: pokemon })
     };
 
+    const isFavorite = (id) => {
+        // return favorites.some((fav) => fav.id === id);
+        return favoritesState.some((fav) => fav.id === id);
+    };
+
     return (
         <FavoritesContext.Provider
             value={{
                 favoritesState,
                 addFavorite,
-                removeFavorite
+                removeFavorite,
+                isFavorite
             }}
         >
             {children}

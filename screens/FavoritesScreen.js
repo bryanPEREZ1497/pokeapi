@@ -1,56 +1,60 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Image, ScrollView } from 'react-native';
-
+import React, { useContext, } from 'react'
+import { View, StyleSheet, Text, StatusBar, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Card, List } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { FavoritesContext } from '../context/FavoritesContext';
-import { List } from 'react-native-paper';
 import FavoriteButton from '../components/FavoriteButton';
-import { useNavigation } from '@react-navigation/native';
-
 
 export default function FavoritesScreen() {
-    const { favoritesState, addFavorite, removeFavorite } = useContext(FavoritesContext)
+    const { favoritesState } = useContext(FavoritesContext)
     const navigation = useNavigation();
-
-    useEffect(() => {
-        console.log(favoritesState, 'keee')
-    }, [favoritesState])
 
     return (
         <ScrollView>
             {
                 favoritesState.length > 0
                     ?
-                    (<List.Section>
-                        {
-                            favoritesState.map((item) => {
-                                return (
-                                    <List.Item
-                                        key={item.id}
-                                        title={item.name}
-                                        left={() => <Image
-                                            source={{ uri: item.sprites?.other.dream_world.front_default }}
-                                            style={{
-                                                width: 50,
-                                                height: 50,
-                                            }} />}
-                                        right={() => <FavoriteButton favorite={item} />}
-                                        style={{ marginVertical: 5, borderBottomColor: 'black', borderBottomWidth: 1 }}
-                                        onPress={() => navigation.navigate('DetailsScreen', { ...item })}
-                                    />
-                                )
-                            })
-
-                        }
-
-
-                    </List.Section>)
+                    (
+                        <List.Section>
+                            {
+                                favoritesState.map((item) => {
+                                    return (
+                                        <Card
+                                            elevation={2}
+                                            style={{ marginVertical: 5, }}
+                                            key={item.id}>
+                                            <Card.Content>
+                                                <List.Item
+                                                    title={item.name}
+                                                    left={() => <Image
+                                                        source={{ uri: item.sprites?.other.dream_world.front_default }}
+                                                        style={{
+                                                            width: 50,
+                                                            height: 50,
+                                                        }} />}
+                                                    right={() => <FavoriteButton favorite={item} />}
+                                                    onPress={() => navigation.navigate('DetailsScreen', { ...item })}
+                                                />
+                                            </Card.Content>
+                                        </Card>
+                                    )
+                                })
+                            }
+                        </List.Section>
+                    )
                     :
-                    <Text>
-                        no favorites
-                    </Text>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                        <TouchableOpacity onPress={() => {
+                            navigation.navigate('Home')
+                        }} >
+                            <Icon name="heart-plus" size={100} color="red" />
+                            <Text style={{ fontSize: 20 }}>No Favorites</Text>
+                        </TouchableOpacity>
+                    </View>
             }
-        </ScrollView>
+        </ScrollView >
 
     )
 }
