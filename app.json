@@ -1,10 +1,17 @@
 {
   "expo": {
-    "name": "movies",
-    "slug": "movies",
+    "name": "pokemonApp",
+    "slug": "pokemon-app",
+    "description": "A awesome app to show pokemons",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "icon": "./assets/app-icon.png",
+    "extra": {
+      "eas": {
+        "projectId": "cedb8bbb-4f06-4540-a6ba-d78fcf2ded1d"
+      }
+    }
   }
 }

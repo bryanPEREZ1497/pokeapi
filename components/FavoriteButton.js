@@ -10,12 +10,11 @@ const iconNames = {
 }
 
 export default function FavoriteButton({ favorite }) {
-    const { favoritesState, addFavorite, removeFavorite } = useContext(FavoritesContext)
+    const { favoritesState, addFavorite, removeFavorite, isFavorite } = useContext(FavoritesContext)
     const [iconName, setIconName] = useState('')
 
     useEffect(() => {
-        const favoriteEncountered = favoritesState.find((fav) => fav.id === favorite.id);
-        if (favoriteEncountered) {
+        if (isFavorite(favorite.id)) {
             setIconName(iconNames.isFavorite)
             return
         }
@@ -28,7 +27,7 @@ export default function FavoriteButton({ favorite }) {
             name={iconName}
             size={26}
             onPress={() => {
-                if (!favoritesState.find(fav => fav.id === favorite.id)) {
+                if (!isFavorite(favorite.id)) {
                     setIconName(iconNames.isFavorite)
                     addFavorite(favorite)
                 }

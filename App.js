@@ -1,3 +1,4 @@
+import 'expo-asset';
 import React from 'react';
 import StackNavigator from './navigators/StackNavigator';
 

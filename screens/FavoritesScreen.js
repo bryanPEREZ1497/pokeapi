@@ -49,9 +49,15 @@ export default function FavoritesScreen() {
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('Home')
                         }} >
-                            <Icon name="heart-plus" size={100} color="red" />
-                            <Text style={{ fontSize: 20 }}>No Favorites</Text>
+                            {/* <Icon name="heart-plus" size={100} color="red" /> */}
+                            <Image
+                                source={require('../assets/pokeheart.jpg')}
+                                style={{
+                                    width: 500,
+                                    height: 500,
+                                }} />
                         </TouchableOpacity>
+                        <Text style={{ fontSize: 20 }}>Add Favorites</Text>
                     </View>
             }
         </ScrollView >
