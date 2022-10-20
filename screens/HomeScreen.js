@@ -33,7 +33,7 @@ export default function HomeScreen() {
       onPress={() => { setPokemon(item); onOpen(); }}
     >
       <Card
-        elevation={2}
+        elevation={3}
       >
         <Card.Title title={item.name} left={() => <FavoriteButton favorite={item} />} />
 
@@ -50,20 +50,18 @@ export default function HomeScreen() {
   );
 
   useEffect(() => {
-    
+
     let url = `https://pokeapi.co/api/v2/pokemon?limit=4&offset=${offset}`;
-    fetch(url)
-      .then(response => response.json())
+    fetch(url).then(response => response.json())
       .then(JsonResponse => {
         JsonResponse.results.forEach(pokemon => {
-          fetch(pokemon.url)
-            .then(response => response.json())
+          fetch(pokemon.url).then(response => response.json())
             .then(JsonResponse => {
               setPokemons([...pokemons, JsonResponse]);
             })
             .catch(error => console.log(error));
         });
-        setPokemons([...pokemons, ...JsonResponse.results]);
+        // setPokemons([...pokemons, ...JsonResponse.results]);
       })
       .catch(error => console.log(error));
 

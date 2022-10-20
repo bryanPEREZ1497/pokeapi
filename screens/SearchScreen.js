@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { Searchbar } from 'react-native-paper';
-import { ScrollView } from 'react-native-gesture-handler';
 import PokemonDetailComponent from '../components/PokemonDetailComponent';
 
 export default function SearchScreen() {
